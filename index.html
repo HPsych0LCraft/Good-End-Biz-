@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good-End-Biz - 企业体面结业一站式服务平台</title>
+    <!-- 稳定CDN：字体图标（无加载问题） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 全局样式：深色调商务风 + 兼容性优化 */
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", "Microsoft JhengHei", Arial, sans-serif;}
+        body {color: #e5e7eb; background: #111827; scroll-behavior: smooth;}
+        a {text-decoration: none; color: #38bdf8;}
+        .container {width: 90%; max-width: 1200px; margin: 0 auto;}
+
+        /* 导航栏：固定顶部 + 阴影 */
+        .header {background: #1f2937; padding: 15px 0; position: fixed; top: 0; left: 0; width: 100%; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
+        .header .container {display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
+        .logo {font-size: 24px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 8px;}
+        .logo-icon {width: 32px; height: 32px; background: #38bdf8; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #1f2937; font-weight: bold;}
+
+        /* 语言切换按钮：核心样式 */
+        .lang-switch {display: flex; gap: 10px; margin-right: 15px;}
+        .lang-switch button {background: #374151; color: #e5e7eb; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s;}
+        .lang-switch button:hover, .lang-switch button.active {background: #38bdf8; color: #1f2937; font-weight: 500;}
+
+        /* 导航菜单 */
+        .nav {display: flex; gap: 20px; align-items: center; flex-wrap: wrap;}
+        .nav a {color: #e5e7eb; transition: color 0.2s;}
+        .nav a:hover {color: #38bdf8;}
+        .contact-btn {background: #38bdf8; color: #1f2937 !important; padding: 8px 20px; border-radius: 4px; font-weight: 500; transition: background 0.2s;}
+        .contact-btn:hover {background: #2596be !important;}
+
+        /* Banner板块：渐变背景 + 居中文字 */
+        .banner {height: 600px; background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: #fff; text-align: center; padding-top: 150px; margin-top: 70px;}
+        .banner h1 {font-size: 40px; margin-bottom: 20px; font-weight: 700;}
+        .banner p {font-size: 18px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8;}
+        .banner .btn {background: #fff; color: #1e3a8a; padding: 12px 30px; border-radius: 4px; font-size: 16px; font-weight: bold; margin: 0 10px; display: inline-block; transition: all 0.2s;}
+        .banner .btn:hover {transform: translateY(-3px);}
+        .banner .btn-outline {background: transparent; border: 2px solid #fff; color: #fff;}
+
+        /* 核心功能标注：黄色角标 + 蓝色边框 */
+        .feature-tag {position: absolute; top: -10px; right: -10px; background: #f59e0b; color: #111827; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; z-index: 5;}
+        .core-feature {position: relative; border: 2px solid #38bdf8;}
+
+        /* 通用板块样式 */
+        .section {padding: 80px 0; background: #1f2937; margin-bottom: 20px; border-radius: 8px;}
+        .section-gray {background: #273449;}
+        .section-title {text-align: center; font-size: 32px; margin-bottom: 60px; color: #fff; position: relative;}
+        .section-title::after {content: ""; width: 80px; height: 4px; background: #38bdf8; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);}
+
+        /* 核心价值模块 */
+        .value-list {display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;}
+        .value-item {width: calc(33.333% - 20px); text-align: center; padding: 20px; background: #273449; border-radius: 8px; position: relative; transition: transform 0.2s;}
+        .value-item:hover {transform: translateY(-5px);}
+        .value-item h3 {font-size: 20px; margin: 20px 0 10px; color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .value-item i {font-size: 24px;}
+        .value-item p {line-height: 1.8; color: #d1d5db;}
+
+        /* 核心服务模块：点击触发模态框 */
+        .service-list {display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;}
+        .service-item {width: calc(25% - 20px); background: #273449; padding: 30px; border-radius: 8px; text-align: center; cursor: pointer; transition: transform 0.2s;}
+        .service-item:hover {transform: translateY(-5px);}
+        .service-item h3 {font-size: 18px; margin: 15px 0 10px; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .service-item i {font-size: 28px; color: #38bdf8;}
+        .service-item p {line-height: 1.8; color: #d1d5db; font-size: 14px;}
+
+        /* 服务流程故事板：6步可视化 */
+        .process-section {padding: 80px 0; background: linear-gradient(135deg, #1f2937, #111827); border-radius: 8px; margin-bottom: 20px;}
+        .process-title {text-align: center; font-size: 28px; margin-bottom: 50px; color: #fff; display: flex; align-items: center; justify-content: center; gap: 12px;}
+        .process-title i {color: #38bdf8; font-size: 32px;}
+        .process-steps {display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; position: relative;}
+        .process-step {width: calc(16.666% - 30px); min-width: 120px; background: #273449; border-radius: 8px; padding: 25px 15px; text-align: center; position: relative; z-index: 2; transition: transform 0.2s;}
+        .process-step:hover {transform: translateY(-5px);}
+        .process-step .step-number {width: 40px; height: 40px; background: #38bdf8; color: #111827; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; margin: 0 auto 15px;}
+        .process-step h4 {color: #fff; margin-bottom: 10px; font-size: 16px;}
+        .process-step p {color: #d1d5db; font-size: 13px; line-height: 1.6;}
+
+        /* 关于我们模块 */
+        .about {display: flex; align-items: center; flex-wrap: wrap; gap: 40px;}
+        .about-text {flex: 1; min-width: 300px;}
+        .about-text p {line-height: 2; color: #d1d5db; margin-bottom: 20px;}
+        .about-text strong {color: #38bdf8; font-weight: 700;}
+        .about-img {flex: 1; min-width: 300px; border-radius: 8px; overflow: hidden;}
+        .about-img img {width: 100%; display: block;}
+
+        /* 联系我们模块 */
+        .contact-info {display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 30px;}
+        .contact-item {flex: 1; min-width: 200px; padding: 20px; background: #273449; border-radius: 8px; transition: transform 0.2s;}
+        .contact-item:hover {transform: translateY(-5px);}
+        .contact-item h3 {font-size: 18px; margin-bottom: 10px; color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .contact-item i {font-size: 20px;}
+        .contact-item p {line-height: 1.8; color: #d1d5db;}
+
+        /* 底部样式 */
+        .footer {background: #1f2937; color: #9ca3af; padding: 50px 0; text-align: center; border-radius: 8px; margin-top: 20px;}
+        .footer p {margin: 10px 0; font-size: 14px;}
+
+        /* 回到顶部按钮：滚动显示 */
+        .back-to-top {position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #38bdf8; color: #111827; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s;}
+        .back-to-top.show {opacity: 1; visibility: visible;}
+
+        /* 服务详情模态框：居中显示 */
+        .modal-overlay {position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px;}
+        .modal-content {background: #1f2937; border-radius: 8px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; padding: 30px; border: 2px solid #38bdf8; position: relative;}
+        .modal-close {position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: #e5e7eb; font-size: 24px; cursor: pointer; transition: color 0.2s;}
+        .modal-close:hover {color: #ef4444;}
+        .modal-title {font-size: 24px; color: #38bdf8; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;}
+        .modal-title i {font-size: 28px;}
+        .modal-body {line-height: 2; color: #d1d5db;}
+        .modal-body h5 {color: #fff; font-size: 18px; margin: 20px 0 10px;}
+        .modal-body ul {margin-left: 20px; margin-bottom: 15px;}
+        .modal-body li {margin-bottom: 8px;}
+
+        /* 响应式适配：手机/平板 */
+        @media (max-width: 992px) {
+            .service-item {width: calc(50% - 20px);}
+            .process-step {width: calc(33.333% - 30px);}
+        }
+        @media (max-width: 768px) {
+            .nav {gap: 10px; margin-top: 10px; width: 100%; justify-content: center;}
+            .banner h1 {font-size: 28px;}
+            .value-item {width: 100%;}
+            .process-step {width: calc(50% - 30px);}
+        }
+        @media (max-width: 480px) {
+            .banner {height: 450px; padding-top: 120px;}
+            .banner .btn {display: block; margin: 10px auto; width: 80%;}
+            .service-item {width: 100%;}
+            .process-step {width: 100%;}
+            .section-title {font-size: 24px;}
+            .process-title {font-size: 22px;}
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏（含语言切换+导航菜单） -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">GEB</div>
+                Good-End-Biz (GEB)
+            </div>
+            <div class="nav">
+                <!-- 语言切换按钮：核心 -->
+                <div class="lang-switch">
+                    <button class="active" data-lang="cn">简体</button>
+                    <button data-lang="tw">繁體</button>
+                    <button data-lang="en">English</button>
+                </div>
+                <!-- 导航菜单：多语言 -->
+                <a href="#about" class="lang-cn">关于我们</a>
+                <a href="#about" class="lang-tw" style="display: none;">關於我們</a>
+                <a href="#about" class="lang-en" style="display: none;">About Us</a>
+
+                <a href="#service" class="lang-cn">核心服务</a>
+                <a href="#service" class="lang-tw" style="display: none;">核心服務</a>
+                <a href="#service" class="lang-en" style="display: none;">Core Services</a>
+
+                <a href="#value" class="lang-cn">核心价值</a>
+                <a href="#value" class="lang-tw" style="display: none;">核心價值</a>
+                <a href="#value" class="lang-en" style="display: none;">Core Values</a>
+
+                <a href="#process" class="lang-cn">服务流程</a>
+                <a href="#process" class="lang-tw" style="display: none;">服務流程</a>
+                <a href="#process" class="lang-en" style="display: none;">Service Process</a>
+
+                <a href="#contact" class="contact-btn lang-cn">立即咨询</a>
+                <a href="#contact" class="contact-btn lang-tw" style="display: none;">立即諮詢</a>
+                <a href="#contact" class="contact-btn lang-en" style="display: none;">Consult Now</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner板块：多语言 -->
+    <section class="banner">
+        <div class="container">
+            <h1 class="lang-cn">企业体面结业 一站式智能解决方案</h1>
+            <h1 class="lang-tw" style="display: none;">企業體面結業 一站式智能解決方案</h1>
+            <h1 class="lang-en" style="display: none;">Dignified Enterprise Closure - One-stop Intelligent Solution</h1>
+
+            <p class="lang-cn">降本增效·保障员工权益·盘活资产IP | 香港中小微企业专属结业服务</p>
+            <p class="lang-tw" style="display: none;">降本增效·保障員工權益·盤活資產IP | 香港中小微企業專屬結業服務</p>
+            <p class="lang-en" style="display: none;">Cost Reduction & Efficiency · Employee Rights · Asset Activation | Exclusive for HK MSMEs</p>
+
+            <a href="#contact" class="btn lang-cn">免费咨询</a>
+            <a href="#contact" class="btn lang-tw" style="display: none;">免費諮詢</a>
+            <a href="#contact" class="btn lang-en" style="display: none;">Free Consult</a>
+
+            <a href="#process" class="btn btn-outline lang-cn">了解服务流程</a>
+            <a href="#process" class="btn btn-outline lang-tw" style="display: none;">了解服務流程</a>
+            <a href="#process" class="btn btn-outline lang-en" style="display: none;">Learn Service Process</a>
+        </div>
+    </section>
+
+    <!-- 核心价值：多语言 + 核心功能标注 -->
+    <section class="section" id="value">
+        <div class="container">
+            <h2 class="section-title lang-cn">核心价值</h2>
+            <h2 class="section-title lang-tw" style="display: none;">核心價值</h2>
+            <h2 class="section-title lang-en" style="display: none;">Core Values</h2>
+
+            <div class="value-list">
+                <div class="value-item core-feature">
+                    <span class="feature-tag lang-cn">核心功能</span>
+                    <span class="feature-tag lang-tw" style="display: none;">核心功能</span>
+                    <span class="feature-tag lang-en" style="display: none;">Core Feature</span>
+                    <h3 class="lang-cn"><i class="fa fa-robot"></i> AI智能流程</h3>
+                    <h3 class="lang-tw" style="display: none;"><i class="fa fa-robot"></i> AI智能流程</h3>
+                    <h3 class="lang-en" style="display: none;"><i class="fa fa-robot"></i> AI Intelligent Process</h3>
+                    <p class="lang-cn">自动化生成法律/财务文档，流程缩短80%，成本降低25-30%</p>
+                    <p class="lang-tw" style="display: none;">自動化生成法律/財務文件，流程縮短80%，成本降低25-30%</p>
+                    <p class="lang-en" style="display: none;">Auto legal/financial docs, 80% shorter process, 25-30% lower cost</p>
+                </div>
+                <div class="value-item core-feature">
+                    <span class="feature-tag lang-cn">核心功能</span>
+                    <span class="feature-tag lang-tw" style="display: none;">核心功能</span>
+                    <span class="feature-tag lang-en" style="display: none;">Core Feature</span>
+                    <h3 class="lang-cn"><i class="fa fa-users"></i> 全维度权益保障</h3>
+                    <h3 class="lang-tw" style="display: none;"><i class="fa fa-users"></i> 全維度權益保障</h3>
+                    <h3 class="lang-en" style="display: none;"><i class="fa fa-users"></i> Comprehensive Rights Protection</h3>
+                    <p class="lang-cn">员工职业转型匹配，精准就业推荐，保障员工合法权益</p>
+                    <p class="lang-tw" style="display: none;">員工職業轉型匹配，精準就業推薦，保障員工合法權益</p>
+                    <p class="lang-en" style="display: none;">Employee career matching, accurate job recommendation, protect legal rights</p>
+                </div>
+                <div class="value-item core-feature">
+                    <span class="feature-tag lang-cn">核心功能</span>
+                    <span class="feature-tag lang-tw" style="display: none;">核心功能</span>
+                    <span class="feature-tag lang-en" style="display: none;">Core Feature</span>
+                    <h3 class="lang-cn"><i class="fa fa-line-chart"></i> 资产价值最大化</h3>
+                    <h3 class="lang-tw" style="display: none;"><i class="fa fa-line-chart"></i> 資產價值最大化</h3>
+                    <h3 class="lang-en" style="display: none;"><i class="fa fa-line-chart"></i> Maximize Asset Value</h3>
+                    <p class="lang-cn">大数据精准估值资产/IP，盘活优质资产，提升回款率</p>
+                    <p class="lang-tw" style="display: none;">大數據精準估值資產/IP，盤活優質資產，提升回款率</p>
+                    <p class="lang-en" style="display: none;">Big data asset valuation, activate high-quality assets, improve repayment rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心服务：多语言 + 点击弹模态框 -->
+    <section class="section section-gray" id="service">
+        <div class="container">
+            <h2 class="section-title lang-cn">核心服务</h2>
+            <h2 class="section-title lang-tw" style="display: none;">核心服務</h2>
+            <h2 class="section-title lang-en" style="display: none;">Core Services</h2>
+
+            <div class="service-list">
+                <div class="service-item" onclick="openModal('cn', 'tw', 'en', '智能结业全流程管理', '智能結業全流程管理', 'Intelligent Closure Process', '<p>依托AI技术和专业团队，为企业提供从结业启动到最终注销的全周期跟进，严格遵循香港《公司条例》，30天内完成全流程结业，进度实时可视化。</p><h5>核心优势：</h5><ul><li>合规保障：符合香港所有相关法规</li><li>高效快捷：AI自动化处理，缩短80%流程</li><li>成本可控：相比传统方式降低25-30%成本</li></ul>', '<p>依託AI技術和專業團隊，為企業提供從結業啟動到最終註銷的全周期跟進，嚴格遵循香港《公司條例》，30天內完成全流程結業，進度實時可視化。</p><h5>核心優勢：</h5><ul><li>合規保障：符合香港所有相關法規</li><li>高效快捷：AI自動化處理，縮短80%流程</li><li>成本可控：相比傳統方式降低25-30%成本</li></ul>', '<p>Relying on AI technology and professional teams, provide full-cycle follow-up from closure initiation to final deregistration, strictly follow Hong Kong\'s Companies Ordinance, complete the full process within 30 days, with real-time visual progress.</p><h5>Core Advantages:</h5><ul><li>Compliance: Meet all Hong Kong relevant regulations</li><li>Efficiency: AI automated processing, 80% shorter process</li><li>Cost-effective: 25-30% lower cost than traditional methods</li></ul>')">
+                    <i class="fa fa-sitemap"></i>
+                    <h3 class="lang-cn">智能结业全流程管理</h3>
+                    <h3 class="lang-tw" style="display: none;">智能結業全流程管理</h3>
+                    <h3 class="lang-en" style="display: none;">Intelligent Closure Process</h3>
+                    <p class="lang-cn">从启动到注销全周期跟进，≤30天完成结业</p>
+                    <p class="lang-tw" style="display: none;">從啟動到註銷全周期跟進，≤30天完成結業</p>
+                    <p class="lang-en" style="display: none;">Full cycle follow-up, closure in ≤30 days</p>
+                </div>
+                <div class="service-item" onclick="openModal('cn', 'tw', 'en', '员工职业转型保障', '員工職業轉型保障', 'Employee Career Protection', '<p>聚焦企业结业后的员工安置问题，为员工建立技能/绩效档案，生成个性化转型报告，对接香港本地招聘渠道，实现精准就业匹配。</p><h5>核心服务：</h5><ul><li>员工技能数据建档</li><li>个性化职业转型规划</li><li>香港本地招聘渠道对接</li></ul>', '<p>聚焦企業結業後的員工安置問題，為員工建立技能/績效檔案，生成個人化轉型報告，對接香港本地招聘渠道，實現精準就業匹配。</p><h5>核心服務：</h5><ul><li>員工技能數據建檔</li><li>個人化職業轉型規劃</li><li>香港本地招聘渠道對接</li></ul>', '<p>Focus on employee placement after enterprise closure, establish skill/performance files for employees, generate personalized transition reports, connect with Hong Kong local recruitment channels to achieve accurate job matching.</p><h5>Core Services:</h5><ul><li>Employee skill data filing</li><li>Personalized career transition planning</li><li>Hong Kong local recruitment channel connection</li></ul>')">
+                    <i class="fa fa-briefcase"></i>
+                    <h3 class="lang-cn">员工职业转型保障</h3>
+                    <h3 class="lang-tw" style="display: none;">員工職業轉型保障</h3>
+                    <h3 class="lang-en" style="display: none;">Employee Career Protection</h3>
+                    <p class="lang-cn">技能数据建档，个性化转型报告，精准就业匹配</p>
+                    <p class="lang-tw" style="display: none;">技能數據建檔，個人化轉型報告，精準就業匹配</p>
+                    <p class="lang-en" style="display: none;">Skill filing, personalized report, accurate job matching</p>
+                </div>
+                <div class="service-item" onclick="openModal('cn', 'tw', 'en', '资产&IP盘活', '資產&IP盤活', 'Asset & IP Activation', '<p>通过大数据技术对企业闲置资产/IP进行专业估值，将优质资产打包重组，对接香港投资者和拍卖渠道，实现资产价值最大化，提升回款率。</p><h5>核心能力：</h5><ul><li>大数据精准估值</li><li>优质资产打包重组</li><li>投资者/拍卖渠道对接</li></ul>', '<p>通過大數據技術對企業閒置資產/IP進行專業估值，將優質資產打包重組，對接香港投資者和拍賣渠道，實現資產價值最大化，提升回款率。</p><h5>核心能力：</h5><ul><li>大數據精準估值</li><li>優質資產打包重組</li><li>投資者/拍賣渠道對接</li></ul>', '<p>Professional valuation of enterprise idle assets/IP through big data technology, package and restructure high-quality assets, connect with Hong Kong investors and auction channels to maximize asset value and improve repayment rate.</p><h5>Core Capabilities:</h5><ul><li>Big data accurate valuation</li><li>High-quality asset restructuring</li><li>Investor/auction channel connection</li></ul>')">
+                    <i class="fa fa-cubes"></i>
+                    <h3 class="lang-cn">资产&IP盘活</h3>
+                    <h3 class="lang-tw" style="display: none;">資產&IP盤活</h3>
+                    <h3 class="lang-en" style="display: none;">Asset & IP Activation</h3>
+                    <p class="lang-cn">大数据估值，资产重组，对接投资者/拍卖渠道</p>
+                    <p class="lang-tw" style="display: none;">大數據估值，資產重組，對接投資者/拍賣渠道</p>
+                    <p class="lang-en" style="display: none;">Big data valuation, asset restructuring, investor connection</p>
+                </div>
+                <div class="service-item" onclick="openModal('cn', 'tw', 'en', '行业失败经验分析', '行業失敗經驗分析', 'Industry Failure Analysis', '<p>为结业企业生成专属的企业生命总结报告，同时将匿名化的行业失败数据分享给香港投资/研究机构，为行业发展提供决策参考，降低创业失败率。</p><h5>报告内容：</h5><ul><li>企业结业原因深度分析</li><li>行业共性问题总结</li><li>创业避坑建议</li></ul>', '<p>為結業企業生成專屬的企業生命總結報告，同時將匿名化的行業失敗數據分享給香港投資/研究機構，為行業發展提供決策參考，降低創業失敗率。</p><h5>報告內容：</h5><ul><li>企業結業原因深度分析</li><li>行業共性問題總結</li><li>創業避坑建議</li></ul>', '<p>Generate exclusive enterprise life summary reports for closed enterprises, and share anonymized industry failure data with Hong Kong investment/research institutions to provide decision references for industry development and reduce entrepreneurial failure rates.</p><h5>Report Content:</h5><ul><li>In-depth analysis of enterprise closure reasons</li><li>Summary of industry common problems</li><li>Entrepreneurial risk avoidance suggestions</li></ul>')">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3 class="lang-cn">行业失败经验分析</h3>
+                    <h3 class="lang-tw" style="display: none;">行業失敗經驗分析</h3>
+                    <h3 class="lang-en" style="display: none;">Industry Failure Analysis</h3>
+                    <p class="lang-cn">企业生命总结报告，匿名行业失败分析数据</p>
+                    <p class="lang-tw" style="display: none;">企業生命總結報告，匿名行業失敗分析數據</p>
+                    <p class="lang-en" style="display: none;">Enterprise summary report, anonymous industry failure data</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务流程故事板：多语言 + 6步可视化 -->
+    <section class="process-section" id="process">
+        <div class="container">
+            <h2 class="process-title lang-cn"><i class="fa fa-step-forward"></i> 企业结业一站式服务流程</h2>
+            <h2 class="process-title lang-tw" style="display: none;"><i class="fa fa-step-forward"></i> 企業結業一站式服務流程</h2>
+            <h2 class="process-title lang-en" style="display: none;"><i class="fa fa-step-forward"></i> One-stop Enterprise Closure Process</h2>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4 class="lang-cn">初步咨询</h4>
+                    <h4 class="lang-tw" style="display: none;">初步諮詢</h4>
+                    <h4 class="lang-en" style="display: none;">Initial Consult</h4>
+                    <p class="lang-cn">企业提交结业需求，专业团队初步评估</p>
+                    <p class="lang-tw" style="display: none;">企業提交結業需求，專業團隊初步評估</p>
+                    <p class="lang-en" style="display: none;">Submit closure request, professional initial assessment</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4 class="lang-cn">方案定制</h4>
+                    <h4 class="lang-tw" style="display: none;">方案定制</h4>
+                    <h4 class="lang-en" style="display: none;">Solution Customization</h4>
+                    <p class="lang-cn">根据企业情况定制专属结业解决方案</p>
+                    <p class="lang-tw" style="display: none;">根據企業情況定制專屬結業解決方案</p>
+                    <p class="lang-en" style="display: none;">Customize exclusive closure solution for enterprise</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4 class="lang-cn">资料收集</h4>
+                    <h4 class="lang-tw" style="display: none;">資料收集</h4>
+                    <h4 class="lang-en" style="display: none;">Document Collection</h4>
+                    <p class="lang-cn">收集企业证照、财务、员工等相关资料</p>
+                    <p class="lang-tw" style="display: none;">收集企業執照、財務、員工等相關資料</p>
+                    <p class="lang-en" style="display: none;">Collect enterprise documents, financial and employee data</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h4 class="lang-cn">流程执行</h4>
+                    <h4 class="lang-tw" style="display: none;">流程執行</h4>
+                    <h4 class="lang-en" style="display: none;">Process Execution</h4>
+                    <p class="lang-cn">AI自动化处理+人工专业跟进双轨执行</p>
+                    <p class="lang-tw" style="display: none;">AI自動化處理+人工專業跟進雙軌執行</p>
+                    <p class="lang-en" style="display: none;">AI automated processing + professional manual follow-up</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <h4 class="lang-cn">进度监控</h4>
+                    <h4 class="lang-tw" style="display: none;">進度監控</h4>
+                    <h4 class="lang-en" style="display: none;">Progress Monitoring</h4>
+                    <p class="lang-cn">实时可视化监控结业流程，随时调整</p>
+                    <p class="lang-tw" style="display: none;">實時可視化監控結業流程，隨時調整</p>
+                    <p class="lang-en" style="display: none;">Real-time visual monitoring, adjust at any time</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">6</div>
+                    <h4 class="lang-cn">完成结业</h4>
+                    <h4 class="lang-tw" style="display: none;">完成結業</h4>
+                    <h4 class="lang-en" style="display: none;">Closure Completion</h4>
+                    <p class="lang-cn">完成所有注销手续，交付结业报告</p>
+                    <p class="lang-tw" style="display: none;">完成所有註銷手續，交付結業報告</p>
+                    <p class="lang-en" style="display: none;">Complete all deregistration, deliver closure report</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们：多语言 -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title lang-cn">关于我们</h2>
+            <h2 class="section-title lang-tw" style="display: none;">關於我們</h2>
+            <h2 class="section-title lang-en" style="display: none;">About Us</h2>
+
+            <div class="about">
+                <div class="about-text">
+                    <p class="lang-cn">Good-End-Biz（GEB）是香港专注于<strong>企业体面结业</strong>的一站式智能服务平台，打破传统创业服务仅聚焦“开业与运营”的认知，为香港中小微企业、轻资产科技/零售企业、创业失败项目提供合规、高效、低成本的结业解决方案。</p>
+                    <p class="lang-tw" style="display: none;">Good-End-Biz（GEB）是香港專注於<strong>企業體面結業</strong>的一站式智能服務平台，打破傳統創業服務僅聚焦「開業與運營」的認知，為香港中小微企業、輕資產科技/零售企業、創業失敗項目提供合規、高效、低成本的結業解決方案。</p>
+                    <p class="lang-en" style="display: none;">Good-End-Biz (GEB) is a one-stop intelligent service platform in Hong Kong focusing on <strong>dignified enterprise closure</strong>. Breaking the traditional cognition of entrepreneurial services focusing only on "startup and operation", we provide compliant, efficient and low-cost closure solutions for Hong Kong MSMEs, light-asset tech/retail enterprises and failed startup projects.</p>
+
+                    <p class="lang-cn">我们拥有技术、法律、金融、HR专业核心团队，依托多模型AI技术打造“破产流水线”，融合香港《公司条例》《破产条例》合规要求，解决企业结业流程混乱、成本高、员工安置难、资产闲置等痛点，同时将企业失败经验转化为行业价值，降低结业的社会负效应。</p>
+                    <p class="lang-tw" style="display: none;">我們擁有技術、法律、金融、HR專業核心團隊，依託多模型AI技術打造「破產流水線」，融合香港《公司條例》《破產條例》合規要求，解決企業結業流程混亂、成本高、員工安置難、資產閒置等痛點，同時將企業失敗經驗轉化為行業價值，降低結業的社會負效應。</p>
+                    <p class="lang-en" style="display: none;">We have a professional core team in technology, law, finance and HR. Relying on multi-model AI technology, we build a "bankruptcy assembly line", integrate the compliance requirements of Hong Kong's Companies Ordinance and Bankruptcy Ordinance, solve the pain points of enterprise closure such as chaotic processes, high costs, difficult employee placement and idle assets, and transform enterprise failure experience into industry value to reduce social negative effects.</p>
+
+                    <p class="lang-cn">发展愿景：立足香港，服务大湾区，成为企业结业服务领域的标杆平台，让每一家企业都能有尊严地落幕，让每一份资源都能被合理盘活。</p>
+                    <p class="lang-tw" style="display: none;">發展願景：立足香港，服務大灣區，成為企業結業服務領域的標杆平台，讓每一間企業都能有尊嚴地落幕，讓每一份資源都能被合理盤活。</p>
+                    <p class="lang-en" style="display: none;">Vision: Based in Hong Kong, serving the Greater Bay Area, becoming a benchmark platform in the enterprise closure service field, allowing every enterprise to end with dignity and every resource to be activated reasonably.</p>
+                </div>
+                <div class="about-img">
+                    <img src="https://i.imgur.com/kx1pRoI.jpeg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们：多语言 -->
+    <section class="section section-gray" id="contact">
+        <div class="container">
+            <h2 class="section-title lang-cn">立即联系我们</h2>
+            <h2 class="section-title lang-tw" style="display: none;">立即聯繫我們</h2>
+            <h2 class="section-title lang-en" style="display: none;">Contact Us Now</h2>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3 class="lang-cn"><i class="fa fa-phone"></i> 咨询热线</h3>
+                    <h3 class="lang-tw" style="display: none;"><i class="fa fa-phone"></i> 諮詢熱線</h3>
+                    <h3 class="lang-en" style="display: none;"><i class="fa fa-phone"></i> Consult Hotline</h3>
+                    <p>+852 XXXXXXXX</p>
+                </div>
+                <div class="contact-item">
+                    <h3 class="lang-cn"><i class="fa fa-envelope"></i> 企业邮箱</h3>
+                    <h3 class="lang-tw" style="display: none;"><i class="fa fa-envelope"></i> 企業郵箱</h3>
+                    <h3 class="lang-en" style="display: none;"><i class="fa fa-envelope"></i> Corporate Email</h3>
+                    <p>service@good-end-biz.com</p>
+                </div>
+                <div class="contact-item">
+                    <h3 class="lang-cn"><i class="fa fa-map-marker"></i> 办公地址</h3>
+                    <h3 class="lang-tw" style="display: none;"><i class="fa fa-map-marker"></i> 辦公地址</h3>
+                    <h3 class="lang-en" style="display: none;"><i class="fa fa-map-marker"></i> Office Address</h3>
+                    <p class="lang-cn">九龙何文田牧爱街30号 香港都会大学</p>
+                    <p class="lang-tw" style="display: none;">九龍何文田牧愛街30號 香港都會大學</p>
+                    <p class="lang-en" style="display: none;">30 Good Shepherd St, Ho Man Tin, Kowloon (HKMU)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部：多语言 -->
+    <footer class="footer">
+        <div class="container">
+            <p class="lang-cn">© 2025 Good-End-Biz (GEB) 版权所有 | 遵循香港《个人资料(隐私)条例》《公司条例》合规运营</p>
+            <p class="lang-tw" style="display: none;">© 2025 Good-End-Biz (GEB) 版權所有 | 遵循香港《個人資料(私隱)條例》《公司條例》合規運營</p>
+            <p class="lang-en" style="display: none;">© 2025 Good-End-Biz (GEB) All Rights Reserved | Compliant with Hong Kong Privacy and Companies Ordinance</p>
+            <p class="lang-cn">本平台为香港中小微企业提供结业一站式服务，不构成任何法律建议</p>
+            <p class="lang-tw" style="display: none;">本平台為香港中小微企業提供結業一站式服務，不構成任何法律建議</p>
+            <p class="lang-en" style="display: none;">This platform provides one-stop closure services for HK MSMEs, not constituting any legal advice.</p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fa fa-arrow-up"></i>
+    </div>
+
+    <!-- 服务详情模态框：多语言适配 -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" onclick="closeModal()"><i class="fa fa-times"></i></button>
+            <h3 class="modal-title lang-cn" id="modalTitleCn">服务详情</h3>
+            <h3 class="modal-title lang-tw" id="modalTitleTw" style="display: none;">服務詳情</h3>
+            <h3 class="modal-title lang-en" id="modalTitleEn" style="display: none;">Service Details</h3>
+            <div class="modal-body lang-cn" id="modalContentCn"></div>
+            <div class="modal-body lang-tw" id="modalContentTw" style="display: none;"></div>
+            <div class="modal-body lang-en" id="modalContentEn" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // ********** 核心：语言切换功能 **********
+        const langButtons = document.querySelectorAll('.lang-switch button');
+        const langCnElements = document.querySelectorAll('.lang-cn');
+        const langTwElements = document.querySelectorAll('.lang-tw');
+        const langEnElements = document.querySelectorAll('.lang-en');
+
+        // 语言切换主函数
+        function switchLanguage(targetLang) {
+            // 切换按钮激活状态
+            langButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === targetLang) btn.classList.add('active');
+            });
+
+            // 隐藏所有语言元素，显示目标语言
+            const hideAll = () => {
+                langCnElements.forEach(el => el.style.display = 'none');
+                langTwElements.forEach(el => el.style.display = 'none');
+                langEnElements.forEach(el => el.style.display = 'none');
+            };
+
+            const showTarget = (targetElements) => {
+                targetElements.forEach(el => {
+                    // 针对不同标签做适配，避免文字消失
+                    if (el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4') {
+                        el.style.display = 'block';
+                    } else if (el.tagName === 'A' || el.tagName === 'P' || el.tagName === 'SPAN') {
+                        el.style.display = 'inherit';
+                    } else {
+                        el.style.display = 'block';
+                    }
+                });
+            };
+
+            hideAll();
+            if (targetLang === 'cn') showTarget(langCnElements);
+            if (targetLang === 'tw') showTarget(langTwElements);
+            if (targetLang === 'en') showTarget(langEnElements);
+
+            // 同步修改网页标题
+            if (targetLang === 'cn') document.title = 'Good-End-Biz - 企业体面结业一站式服务平台';
+            if (targetLang === 'tw') document.title = 'Good-End-Biz - 企業體面結業一站式服務平台';
+            if (targetLang === 'en') document.title = 'Good-End-Biz - Dignified Enterprise Closure One-stop Solution';
+        }
+
+        // 绑定语言按钮点击事件
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchLanguage(btn.dataset.lang);
+            });
+        });
+
+        // ********** 模态框功能：多语言适配 **********
+        function openModal(cn, tw, en, titleCn, titleTw, titleEn, contentCn, contentTw, contentEn) {
+            // 填充对应语言的标题和内容
+            document.getElementById('modalTitleCn').innerText = titleCn;
+            document.getElementById('modalTitleTw').innerText = titleTw;
+            document.getElementById('modalTitleEn').innerText = titleEn;
+            document.getElementById('modalContentCn').innerHTML = contentCn;
+            document.getElementById('modalContentTw').innerHTML = contentTw;
+            document.getElementById('modalContentEn').innerHTML = contentEn;
+            // 显示模态框，隐藏滚动条
+            document.getElementById('serviceModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            // 同步模态框语言与当前页面语言
+            const activeLang = document.querySelector('.lang-switch button.active').dataset.lang;
+            switchLanguage(activeLang);
+        }
+
+        function closeModal() {
+            document.getElementById('serviceModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击模态框外部关闭
+        document.getElementById('serviceModal').addEventListener('click', (e) => {
+            if (e.target === this) closeModal();
+        });
+
+        // ********** 回到顶部功能 **********
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // ********** 导航平滑跳转 **********
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = anchor.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
